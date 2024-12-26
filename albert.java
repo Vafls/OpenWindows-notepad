@@ -75,11 +75,10 @@ public class albert extends Application {
 
         Scene scene = new Scene(root, 800, 600);
 
-        // Ensure resizable CodeArea
         codeArea.prefWidthProperty().bind(scene.widthProperty().subtract(fileListView.getPrefWidth()));
         codeArea.prefHeightProperty().bind(scene.heightProperty());
 
-        // Save file on Ctrl+S
+        // Save file on Ctrl+S combination 
         scene.setOnKeyPressed(event -> {
             if (event.isControlDown() && event.getCode().toString().equals("S")) {
                 saveFile();
@@ -165,24 +164,24 @@ public class albert extends Application {
             HBox fileBox = new HBox();
             fileBox.setSpacing(5);
     
-            // Кнопка для выбора файла
+            // button to choose the file
             Button fileButton = new Button(openFile.getName());
             fileButton.setOnAction(e -> {
                 try {
-                    // Загружаем содержимое выбранного файла
+                    // loading choosed file
                     String content = new String(Files.readAllBytes(openFile.toPath()));
                     codeArea.replaceText(content);
                     currentFile = openFile;
-                    unsavedFiles.put(openFile, false); // Обновляем состояние
+                    unsavedFiles.put(openFile, false); // update state
                 } catch (IOException ex) {
                     showError("Could not open the file.");
                 }
             });
     
-            // Индикатор несохраненного файла
+            // check if file saved
             Circle unsavedIndicator = new Circle(5, isUnsaved ? Color.RED : Color.TRANSPARENT);
     
-            // Кнопка для закрытия файла
+            // close file
             Button closeButton = new Button("x");
             closeButton.setOnAction(e -> closeFile(openFile));
     
